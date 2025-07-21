@@ -30,7 +30,9 @@ jobs:
             libtheora-dev \
             libsdl2-dev \
             libglew-dev \
-            portaudio19-dev
+            libglfw3-dev \
+            portaudio19-dev \
+            libportaudio2
 
       - name: Build
         run: make -j$(nproc)
