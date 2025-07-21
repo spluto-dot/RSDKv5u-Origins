@@ -1,4 +1,4 @@
-name: Build (Linux)
+name: Build (Windows)
 
 on:
   workflow_dispatch:
@@ -8,31 +8,27 @@ on:
     branches: [ master ]
 
 jobs:
-  build-linux:
-    runs-on: ubuntu-latest
+  build-windows:
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
 
       - name: Update submodules
         run: git submodule update --init --recursive
+        shell: bash
+
+      - name: Install vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
+          C:\vcpkg\bootstrap-vcpkg.bat
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            build-essential \
-            libasound2-dev \
-            libgl1-mesa-dev \
-            libglu1-mesa-dev \
-            libpng-dev \
-            libfreetype6-dev \
-            zlib1g-dev \
-            libtheora-dev \
-            libsdl2-dev \
-            libglew-dev \
-            libglfw3-dev \
-            portaudio19-dev \
-            libportaudio2
+          C:\vcpkg\vcpkg install sdl2 libogg libvorbis libtheora glew portaudio
+
+      - name: Install make
+        run: choco install make -y
 
       - name: Build
-        run: make -j$(nproc)
+        run: make
+        shell: cmd
