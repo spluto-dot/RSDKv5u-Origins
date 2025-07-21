@@ -1,4 +1,4 @@
-name: Build
+name: Build (Linux)
 
 on:
   workflow_dispatch:
@@ -28,7 +28,9 @@ jobs:
             libfreetype6-dev \
             zlib1g-dev \
             libtheora-dev \
-            libsdl2-dev
+            libsdl2-dev \
+            libglew-dev \
+            portaudio19-dev
 
       - name: Build
         run: make -j$(nproc)
