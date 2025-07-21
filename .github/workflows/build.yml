@@ -1,13 +1,13 @@
 name: Build
 
 on:
-  workflow_dispatch:   # 🔥 permite rodar manualmente no botão "Run workflow"
+  workflow_dispatch:   # permite rodar manualmente
   push:
     branches:
-      - main           # 🔄 rode ao fazer push na branch main
+      - master         # usa a branch master
   pull_request:
     branches:
-      - main           # 🔄 rode ao abrir PR para main
+      - master         # usa a branch master
 
 jobs:
   build-linux:
