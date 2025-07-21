@@ -6,7 +6,7 @@ on: workflow_dispatch
 # on:
 #   push:
 #     branches:
-#       - master
+#       - master 
 
 # TODO: readd with: submodules: recursive once we can
 
