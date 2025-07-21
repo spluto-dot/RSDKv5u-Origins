@@ -1,32 +1,39 @@
 name: Build
 
 on:
-  workflow_dispatch:   # permite rodar manualmente
+  workflow_dispatch:
   push:
-    branches:
-      - master         # usa a branch master
+    branches: [ master ]
   pull_request:
-    branches:
-      - master         # usa a branch master
+    branches: [ master ]
 
 jobs:
-  build-linux:
-    name: Build (Linux)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y build-essential
-      - name: Build on Linux
-        run: make
-
   build-windows:
     name: Build (Windows)
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install make (via chocolatey)
+
+      # Atualizar submódulos
+      - name: Update submodules
+        run: git submodule update --init --recursive
+        shell: bash
+
+      # Clonar e preparar o vcpkg
+      - name: Install vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
+          C:\vcpkg\bootstrap-vcpkg.bat
+
+      # Instalar dependências via vcpkg
+      - name: Install dependencies
+        run: |
+          C:\vcpkg\vcpkg install sdl2 ogg vorbis theora
+
+      # Build usando o make do mingw ou equivalente
+      - name: Install make
         run: choco install make -y
-      - name: Build on Windows
+
+      - name: Build
         run: make
         shell: cmd
